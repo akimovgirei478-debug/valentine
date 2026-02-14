@@ -22,11 +22,9 @@ body {
     border-radius: 25px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     text-align: center;
     color: white;
-    transition: 0.4s;
 }
 
 button {
@@ -52,14 +50,8 @@ button:hover {
 }
 
 @keyframes float {
-    0% {
-        transform: translateY(100vh) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-10vh) scale(1.5);
-        opacity: 0;
-    }
+    0% { transform: translateY(100vh); opacity:1; }
+    100% { transform: translateY(-10vh); opacity:0; }
 }
 
 .big-emoji {
@@ -71,26 +63,6 @@ button:hover {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); }
     100% { transform: scale(1); }
-}
-
-.fade-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 32px;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-    z-index: 9999;
-}
-.fade-screen.show {
-    opacity: 1;
 }
 </style>
 </head>
@@ -105,86 +77,102 @@ button:hover {
 
 <script>
 
-const VIDEO_ID = "dQw4w9WgXcQ";
-
 const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const card = document.getElementById("card");
 const title = document.getElementById("title");
 
 let scale = 1;
-
+let moveCount = 0;
+const maxMoves = 4;
 noBtn.addEventListener("mouseover", () => {
+
+    if (moveCount >= maxMoves) {
+        noBtn.style.transition = "opacity 0.4s ease";
+        noBtn.style.opacity = "0";
+
+        setTimeout(() => {
+            noBtn.style.display = "none";
+        }, 400);
+        return;
+    }
+
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+
     noBtn.style.position = "absolute";
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
-    scale += 0.1;
-    yesBtn.style.transform = `scale(${scale})`;
-});
 
+    scale += 0.15;
+    yesBtn.style.transform = `scale(${scale})`;
+
+    moveCount++;
+});
 yesBtn.addEventListener("click", () => {
+
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
     title.style.display = "none";
 
     card.innerHTML = `
         <div class="big-emoji">💖🥰💖</div>
-        <h1>oh that so cute i knew i knew<br>
-        u don't had no choice 😌💕
-        deal? deal? deal?</h1>
+        <h1>
+        oh that so cute i knew i knew<br>
+        u don't had no choice 😌💕<br>
+        deal? deal? deal?
+        </h1>
         <button id="finalDeal">DEAL 💖</button>
     `;
 
     const finalBtn = document.getElementById("finalDeal");
 
-finalBtn.addEventListener("click", () => {
-    const video = document.createElement("video");
-    video.src = "rick.mp4";
-    video.autoplay = true;
-    video.playsInline = true;
-    video.controls = false;
+    finalBtn.addEventListener("click", () => {
 
-    video.style.position = "fixed";
-    video.style.top = "0";
-    video.style.left = "0";
-    video.style.width = "100vw";
-    video.style.height = "100vh";
-    video.style.objectFit = "cover";
-    video.style.zIndex = "1";
+        const video = document.createElement("video");
+        video.src = "rick.mp4";
+        video.autoplay = true;
+        video.playsInline = true;
+        video.controls = false;
 
-    document.body.appendChild(video);
-    const fade = document.createElement("div");
-    fade.style.position = "fixed";
-    fade.style.top = "0";
-    fade.style.left = "0";
-    fade.style.width = "100vw";
-    fade.style.height = "100vh";
-    fade.style.background = "black";
-    fade.style.display = "flex";
-    fade.style.justifyContent = "center";
-    fade.style.alignItems = "center";
-    fade.style.color = "white";
-    fade.style.fontSize = "32px";
-    fade.style.zIndex = "2";
-    fade.style.transition = "opacity 2s";
-    fade.innerText = "turn the volume up...";
+        video.style.position = "fixed";
+        video.style.top = "0";
+        video.style.left = "0";
+        video.style.width = "100vw";
+        video.style.height = "100vh";
+        video.style.objectFit = "cover";
+        video.style.zIndex = "1";
 
-    document.body.appendChild(fade);
+        document.body.appendChild(video);
+        const fade = document.createElement("div");
+        fade.style.position = "fixed";
+        fade.style.top = "0";
+        fade.style.left = "0";
+        fade.style.width = "100vw";
+        fade.style.height = "100vh";
+        fade.style.background = "black";
+        fade.style.display = "flex";
+        fade.style.justifyContent = "center";
+        fade.style.alignItems = "center";
+        fade.style.color = "white";
+        fade.style.fontSize = "32px";
+        fade.style.zIndex = "2";
+        fade.style.transition = "opacity 2s";
+        fade.innerText = "turn the volume up...";
 
-    setTimeout(() => {
-        fade.style.opacity = "0";
-    }, 2000);
+        document.body.appendChild(fade);
 
-    setTimeout(() => {
-        fade.remove();
-    }, 4000);
+        setTimeout(() => {
+            fade.style.opacity = "0";
+        }, 2000);
+
+        setTimeout(() => {
+            fade.remove();
+        }, 4000);
+
+    });
 
 });
-
-});
-
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -202,4 +190,3 @@ setInterval(createHeart, 300);
 
 </body>
 </html>
-
