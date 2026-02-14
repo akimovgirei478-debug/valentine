@@ -140,17 +140,18 @@ yesBtn.addEventListener("click", () => {
     const finalBtn = document.getElementById("finalDeal");
 
 finalBtn.addEventListener("click", () => {
+    const video = document.createElement("video");
+    video.src = "rick.mp4";
+    video.autoplay = true;
+    video.playsInline = true;
+    video.controls = false;
 
-    const video = document.createElement("iframe");
-    video.src = "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=0&rel=0&modestbranding=1";
-    video.allow = "autoplay; encrypted-media";
-    video.allowFullscreen = true;
     video.style.position = "fixed";
     video.style.top = "0";
     video.style.left = "0";
     video.style.width = "100vw";
     video.style.height = "100vh";
-    video.style.border = "none";
+    video.style.objectFit = "cover";
     video.style.zIndex = "1";
 
     document.body.appendChild(video);
@@ -161,14 +162,21 @@ finalBtn.addEventListener("click", () => {
     fade.style.width = "100vw";
     fade.style.height = "100vh";
     fade.style.background = "black";
+    fade.style.display = "flex";
+    fade.style.justifyContent = "center";
+    fade.style.alignItems = "center";
+    fade.style.color = "white";
+    fade.style.fontSize = "32px";
     fade.style.zIndex = "2";
-    fade.style.transition = "opacity 2s ease";
-    fade.style.opacity = "1";
+    fade.style.transition = "opacity 2s";
+    fade.innerText = "turn the volume up...";
 
     document.body.appendChild(fade);
+
     setTimeout(() => {
         fade.style.opacity = "0";
     }, 2000);
+
     setTimeout(() => {
         fade.remove();
     }, 4000);
@@ -194,3 +202,4 @@ setInterval(createHeart, 300);
 
 </body>
 </html>
+
